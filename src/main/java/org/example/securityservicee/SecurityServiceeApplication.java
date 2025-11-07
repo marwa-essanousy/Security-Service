@@ -16,9 +16,9 @@ public class SecurityServiceeApplication {
     public static void main(String[] args) {
         SpringApplication.run(SecurityServiceeApplication.class, args);
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 }

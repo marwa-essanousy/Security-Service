@@ -57,7 +57,7 @@ public class API {
                 .subject(authenticate.getName())
                 .issuer("Security-Service")
                 .issuedAt(instant)
-                .expiresAt(instant.plus(2, ChronoUnit.MINUTES))
+                .expiresAt(instant.plus(4, ChronoUnit.HOURS))
                 .claim("scope", scope)
                 .build();
 
@@ -69,7 +69,7 @@ public class API {
                 .subject(authenticate.getName())
                 .issuer("Security-Service")
                 .issuedAt(instant)
-                .expiresAt(instant.plus(15, ChronoUnit.MINUTES))
+                .expiresAt(instant.plus(4, ChronoUnit.HOURS))
                 .build();
 
         String Refrech_token = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet_access)).getTokenValue();
@@ -107,7 +107,7 @@ public class API {
                 .subject(userDetails.getUsername())
                 .issuer("Security-Service")
                 .issuedAt(instant)
-                .expiresAt(instant.plus(2, ChronoUnit.MINUTES))
+                .expiresAt(instant.plus(200, ChronoUnit.MINUTES))
                 .claim("scope", scope)
                 .build();
 
