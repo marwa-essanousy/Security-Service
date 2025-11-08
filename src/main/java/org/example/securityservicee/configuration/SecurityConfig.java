@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
     private final RsaKeys rsaKeys;
     private final JpaUserDetailsService userDetailsService;
 
@@ -61,6 +60,8 @@ public class SecurityConfig {
         JwtGrantedAuthoritiesConverter delegate = new JwtGrantedAuthoritiesConverter();
         // conserve conversion des "scope"/"scp" si tu en utilises (préfixe SCOPE_)
         delegate.setAuthoritiesClaimName("scope");
+        // ensure the converter prefixes extracted scopes with SCOPE_
+        delegate.setAuthorityPrefix("SCOPE_");
 
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {

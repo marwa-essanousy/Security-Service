@@ -48,8 +48,17 @@ public class API {
                 new UsernamePasswordAuthenticationToken(username, password)
         );
 
-        // get scope
-        String scope = authenticate.getAuthorities().stream().map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
+        // get scope and roles
+        String scope = authenticate.getAuthorities().stream()
+                .map(auth -> {
+                    String authority = auth.getAuthority();
+                    if (authority.startsWith("ROLE_")) {
+                        // Don't add SCOPE_ prefix here, just remove ROLE_ prefix
+                        return authority.substring(5);
+                    }
+                    return authority;
+                })
+                .collect(Collectors.joining(" "));
 
         // creation des ID Token
         //1 -Access token
@@ -72,7 +81,7 @@ public class API {
                 .expiresAt(instant.plus(4, ChronoUnit.HOURS))
                 .build();
 
-        String Refrech_token = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet_access)).getTokenValue();
+        String Refrech_token = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet_refrech)).getTokenValue();
 
         ID_token.put("access_token", Access_token);
         ID_token.put("refresh_token", Refrech_token);
@@ -100,7 +109,16 @@ public class API {
         // creation de l'access token
 
         // get scope
-        String scope = userDetails.getAuthorities().stream().map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
+        String scope = userDetails.getAuthorities().stream()
+                .map(auth -> {
+                    String authority = auth.getAuthority();
+                    if (authority.startsWith("ROLE_")) {
+                        // Convert ROLE_ to SCOPE_
+                        return "SCOPE_" + authority.substring(5);
+                    }
+                    return authority;
+                })
+                .collect(Collectors.joining(" "));
 
         //1 -Access token
         JwtClaimsSet jwtClaimsSet_access = JwtClaimsSet.builder()
